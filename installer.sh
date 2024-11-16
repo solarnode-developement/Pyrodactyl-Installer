@@ -312,11 +312,14 @@ panel_install(){
         pause 0.5s
         mkdir /var
         mkdir /var/www
-        mkdir /var/www/pterodactyl
+        # Make directories
+        mkdir -p /var/www/pterodactyl
         cd /var/www/pterodactyl
-        curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/latest/download/panel.tar.gz
-        tar -xzvf panel.tar.gz
+# Download and extract panel
+        git clone https://github.com/pyrohost/pyrodactyl.git /var/www/pterodactyl --depth=2
+# Permissions for caches
         chmod -R 755 storage/* bootstrap/cache/
+# Install dependencies & build panel
         cp .env.example .env
         command composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
         php artisan key:generate --force
